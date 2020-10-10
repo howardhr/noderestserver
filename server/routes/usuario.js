@@ -17,7 +17,7 @@ desde = Number(desde);
 let limite = req.query.limite || 5;
 limite = Number(limite);
 
-usuario.find({ })
+usuario.find({ }, )
        .skip(desde)  
        .limit(limite)
        .exec((err, usuarios)=>{
@@ -25,8 +25,19 @@ usuario.find({ })
             return res.status(400).json({
               ok: false,
               err
-            })
+            });
+
           }
+
+          Usuario.count({}, (err, conteo)=>{
+         
+            res.json({
+              ok: true,
+              usuarios,
+              cuantos: conteo
+            })
+
+          })
 
            res.json({
             ok: true,
@@ -92,8 +103,42 @@ app.put("/usuario/:id", function (req, res) {
   });
 });
 
-app.delete("/usuario", function (req, res) {
-  res.send(" delete Usuario");
+app.delete("/usuario/:id", function (req, res) {
+  
+let id = req.params.id;
+
+Usuario.findByIdAndRemove(id,(err, usuarioBorrado)=>{
+
+
+if (err) {
+  return res.status.json({
+
+    ok: false,
+    err
+  });
+};
+
+if(!usuarioBorrado ){
+
+  return res.status(400).json({
+    ok:false,
+    error: {
+      message: 'Usuario no encontrado'
+    }
+  });
+}
+
+res.json({
+  ok: true,
+  usuario: usuarioBorrado
+})
+
+
+})
+
+
+
+
 });
 
 module.exports = app;
