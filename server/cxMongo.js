@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // import mongoose from "mongoose";
 
 mongoose.connect(
-  "process.env.LRU",
+  "mongodb+srv://froy:1063@cluster0.uchxt.mongodb.net/cafe?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
